@@ -81,14 +81,14 @@ Alice:
  |   4__   |   4__   |  
 3_M   |    |    |   3__ 
  |   3__   |   3__   |  
-2__   |   2_U   |   2__ 
- |   2_O   |   2__   |  
+2__   |   2_B   |   2__ 
+ |   2_D   |   2__   |  
 1__   |   1__   |   1__ 
  |   1__   |   1__   |  
  |    |    |    |    |  
  =    =    =    =    =
 Alice: Выберите столбец: 4
-Alice: Выберите действие: BOWL на 6 этаж (1) или MOUSE на 4 этаж (2): 2
+Alice: Выберите действие: DISH на 6 этаж (1) или MOUSE на 4 этаж (2): 2
 -----
 Bob: Кубик: 3
 Bob:
@@ -98,7 +98,7 @@ Bob:
  |   6__   |   6__      
 5__   |   5__   |       
  |   5__   |   5__      
- |    |   4_A   |   3/2 
+ |    |   4_Y   |   3/2 
  |   4__   |   4_H   |  
 3__   |    |    |   3__ 
  |   3__   |   3__   |  
@@ -109,7 +109,7 @@ Bob:
  |    |    |    |    |  
  =    =    =    =    =
 Bob: Выберите столбец: 2
-Bob: Выберите действие: BOWL на 3 этаж (1) или BUTTERFLY на 4 этаж (2): 1
+Bob: Выберите действие: DISH на 3 этаж (1) или BUTTERFLY на 4 этаж (2): 1
 -----
 Server: Фаза 3
 Server: Новых заполненных столбцов не обнаружено!
@@ -119,31 +119,37 @@ Server: Раунд закончен.
 ## Формат save-файла
 ```json
 {
-  "round": "4",
-  "phase": "3",
-  "turn": "0",
+  "round": 4,
+  "phase": 3,
+  "turn": 0,
   "dices": "4",
   "players": [
     {
       "name": "Alice",
-      "dice": "6",
-      "score": "0",
-      "tower_1": "E E M I E I",
-      "tower_2": "E O E E E E",
-      "tower_3": "E U I E E E",
-      "tower_4": "E E E E E E",
-      "tower_5": "E E E I I I",
+      "dice": 6,
+      "score": 0,
+      "house":
+      [
+        "E E M I E I",
+        "E D E E E E",
+        "E B I E E E",
+        "E E E M E E",
+        "E E E I I I"
+      ],
       "player_type": "human"
     },
     {
       "name": "Bob",
-      "dice": "3",
-      "score": "0",
-      "tower_1": "E E E I E I",
-      "tower_2": "E E E E E E",
-      "tower_3": "E M I A E E",
-      "tower_4": "E E E H E E",
-      "tower_5": "E E E I I I",
+      "dice": 3,
+      "score": 0,
+      "house":
+      [
+        "E E E I E I", 
+        "E E D E E E", 
+        "E M I Y E E", 
+        "E E E H E E", 
+        "E E E I I I"
+      ],
       "player_type": "dummy_ai"
     }
   ]

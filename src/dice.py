@@ -2,31 +2,41 @@ from random import randrange
 
 class Dice:
     """Кубики Котокафе"""
-    #Nota bene: value_char потребуется для занесения в объект House.
-    #Это позволит выводить дом (ASCII-art)
-    #с меньшим количеством преобразований.
-    VALUES = ['HOUSE', 'BALL', 'BUTTERFLY', 'BOWL', 'PILLOW', 'MOUSE']
-    VALUES_SHORT = ['H', 'A', 'U', 'O', 'P', 'M']
+    EMPTY = 0
+    HOUSE = 1
+    YARN = 2
+    BUTTERFLY = 3
+    DISH = 4
+    PILLOW = 5
+    MOUSE = 6
+    INVALID = 7
 
-    def __init__(self, value = 1):
-        if value not in range(1,7):
+    VALUES = ['EMPTY', 'HOUSE', 'YARN', 'BUTTERFLY', 'DISH', 'PILLOW', 'MOUSE', 'INVALID']
+    VALUES_SHORT = ['E', 'H', 'Y', 'B', 'D', 'P', 'M', 'I']
+
+    def __init__(self, value = 0):
+        if value not in range(0,8):
             raise ValueError
         self.value = value
-        self.value_char = Dice.VALUES_SHORT[self.value-1]
         
     def __repr__(self):
         return f'{self.value}'
 
     def __eq__(self, other):
-        return self.value == other.value and self.value_char == other.value_char
+        return self.value == other.value
 
     def save(self):
-        return repr(self)
+        return int(repr(self))
 
     @staticmethod
-    def load(text: str):
-        return Dice(value = int(text[0]))
+    def load(num: int):
+        return Dice(num)
 
     def roll(self):
         self.value = randrange(1, 7)
-        self.value_char = Dice.VALUES_SHORT[self.value-1]
+
+    def char(self):
+        return f'{Dice.VALUES_SHORT[self.value]}'
+
+    def word(self):
+        return f'{Dice.VALUES[self.value]}'
