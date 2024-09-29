@@ -56,15 +56,15 @@ def test_load():
 
 def test_roll():
     d = Dice()
-    n = 0
+    n = [0, 0, 0, 0, 0, 0]
     for i in range(1000):
         d.roll()
         assert d.value in range(1,7)
     for i in range(1200):
         d.roll()
-        if d.value == 1:
-            n += 1
-    assert 150 < n < 250
+        n[d.value-1] += 1
+    for i in range(1,7):
+        assert 150 < n[i-1] < 250
 
 
 def test_char():

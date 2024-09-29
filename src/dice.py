@@ -1,4 +1,5 @@
 from random import randrange
+import typing
 
 class Dice:
     """Кубики Котокафе"""
@@ -14,6 +15,7 @@ class Dice:
     VALUES = ['EMPTY', 'HOUSE', 'YARN', 'BUTTERFLY', 'DISH', 'PILLOW', 'MOUSE', 'INVALID']
     VALUES_SHORT = ['E', 'H', 'Y', 'B', 'D', 'P', 'M', 'I']
 
+    #Стандартные __init__, __repr__ и __eq__:
     def __init__(self, value = 0):
         if value not in range(0,8):
             raise ValueError
@@ -25,13 +27,15 @@ class Dice:
     def __eq__(self, other):
         return self.value == other.value
 
+    #Методы сохранения и загрузки:
     def save(self):
         return int(repr(self))
 
-    @staticmethod
-    def load(num: int):
-        return Dice(num)
+    @classmethod
+    def load(cls, num: int) -> typing.Self:
+        return cls(num)
 
+    #Методы броска, вывода символа и вывода слова:
     def roll(self):
         self.value = randrange(1, 7)
 

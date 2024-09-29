@@ -75,13 +75,13 @@ Alice:
      9/5   |   8/4      
 6/4   |   6__   |       
  |   6__   |   6__      
-5__   |   5__   |       
- |   5__   |   5__      
- |    |   4__   |   3/2 
+5__   |   5__   |   3/2 
+ |   5__   |   5__   |  
+ |    |   4__   |   4__ 
  |   4__   |   4__   |  
 3_M   |    |    |   3__ 
  |   3__   |   3__   |  
-2__   |   2_B   |   2__ 
+2__   |   2_B   |    |  
  |   2_D   |   2__   |  
 1__   |   1__   |   1__ 
  |   1__   |   1__   |  
@@ -96,13 +96,13 @@ Bob:
      9/5   |   8/4      
 6/4   |   6__   |       
  |   6__   |   6__      
-5__   |   5__   |       
- |   5__   |   5__      
- |    |   4_Y   |   3/2 
+5__   |   5__   |   3/2  
+ |   5__   |   5__   |  
+ |    |   4_Y   |   4__ 
  |   4__   |   4_H   |  
 3__   |    |    |   3__ 
  |   3__   |   3__   |  
-2__   |   2_M   |   2__ 
+2__   |   2_M   |    |  
  |   2__   |   2__   |  
 1__   |   1__   |   1__ 
  |   1__   |   1__   |  
@@ -130,11 +130,13 @@ Server: Раунд закончен.
       "score": 0,
       "house":
       [
-        "E E M I E I",
-        "E D E E E E",
-        "E B I E E E",
-        "E E E M E E",
-        "E E E I I I"
+        "I I I I I I I I",
+        "I E E M I E I I",
+        "I E D E E E E I",
+        "I E B I E E E I",
+        "I E E E M E E I",
+        "I E I E E I I I",
+        "I I I I I I I I"
       ],
       "player_type": "human"
     },
@@ -144,11 +146,13 @@ Server: Раунд закончен.
       "score": 0,
       "house":
       [
-        "E E E I E I", 
-        "E E D E E E", 
-        "E M I Y E E", 
-        "E E E H E E", 
-        "E E E I I I"
+        "I I I I I I I I",
+        "I E E E I E I I", 
+        "I E E D E E E I", 
+        "I E M I Y E E I", 
+        "I E E E H E E I", 
+        "I E I E E I I I",
+        "I I I I I I I I"
       ],
       "player_type": "dummy_ai"
     }
