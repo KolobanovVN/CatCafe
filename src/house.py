@@ -6,13 +6,13 @@ class House:
     # Nota bene: i - это башня, a j - это этаж!
 
                #0 1 2 3 4 5 6 7#
-    PATTERN = ["I I I I I I I I", #0
-               "I E E E I E I I", #1
-               "I E E E E E E I", #2
-               "I E E I E E E I", #3
-               "I E E E E E E I", #4
-               "I E I E E I I I", #5
-               "I I I I I I I I"] #6
+    PATTERN = ['I I I I I I I I', #0
+               'I E E E I E I I', #1
+               'I E E E E E E I', #2
+               'I E E I E E E I', #3
+               'I E E E E E E I', #4
+               'I E I E E I I I', #5
+               'I I I I I I I I'] #6
 
     EVEN = [[0, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0]]
     ODD  = [[0, 1], [1, 1], [1, 0],  [0, -1], [-1, 0],  [-1, 1]]
@@ -37,7 +37,7 @@ class House:
                 self.field[i].append(Dice(Dice.VALUES_SHORT.index(tower[j])))
 
     def __repr__(self):
-        return self.save()
+        return f'{self.save()}'
 
     def __eq__(self, other):
         if isinstance(other, list):
@@ -60,6 +60,8 @@ class House:
 
     # Методы размещения и просмотра кости:
     def place(self, dice: Dice, tower: int, floor: int):
+        if self.field[tower][floor] == Dice(Dice.INVALID):
+            raise ValueError
         self.field[tower][floor] = dice
 
     def get_item(self, tower: int, floor: int) -> Dice:
@@ -107,7 +109,7 @@ class House:
         return score
 
     def d_score(self) -> int:
-        return 0 # Сложный код: реализовать через 2 commit'а
+        return 0 # Сложный код: реализовать через 1 commit
 
     def p_score(self) -> int:
         score = 0
