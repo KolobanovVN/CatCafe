@@ -21,6 +21,42 @@ house_list2 = ['I I I I I I I I',
                'I P I P P I I I',
                'I I I I I I I I']
 
+house_str_pattern = '''
+          7/3           
+     9/5   |   8/4      
+6/4   |   6__   |       
+ |   6__   |   6__      
+5__   |   5__   |   3/2 
+ |   5__   |   5__   |  
+ |    |   4__   |   4__ 
+ |   4__   |   4__   |  
+3__   |    |    |   3__ 
+ |   3__   |   3__   |  
+2__   |   2__   |    |  
+ |   2__   |   2__   |  
+1__   |   1__   |   1__ 
+ |   1__   |   1__   |  
+ |    |    |    |    |  
+ =    =    =    =    ='''
+
+house_str_1 = '''
+          7/3           
+     9/5   |   8/4      
+6/4   |   6__   |       
+ |   6__   |   6__      
+5__   |   5__   |   3/2 
+ |   5__   |   5__   |  
+ |    |   4__   |   4__ 
+ |   4__   |   4_M   |  
+3_M   |    |    |   3__ 
+ |   3__   |   3__   |  
+2__   |   2_B   |    |  
+ |   2_D   |   2__   |  
+1__   |   1__   |   1__ 
+ |   1__   |   1__   |  
+ |    |    |    |    |  
+ =    =    =    =    ='''
+
 def test_init():
     house1 = House(None)
     house2 = House(house_list1)
@@ -113,4 +149,7 @@ def test_neighbors():
     pass
 
 def test_print():
-    pass
+    house1 = House(None)
+    house2 = House(house_list1)
+    assert house1.print() == house_str_pattern
+    assert house2.print() == house_str_1

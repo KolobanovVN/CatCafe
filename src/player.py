@@ -22,8 +22,7 @@ class Player:
 Игрок: {self.name}
 Кубик: {self.dice}
 Очки:  {self.score}
-Игровое поле:
-{self.house.print()}
+Игровое поле: {self.house.print()}
 Тип игрока: {self.player_type}
 '''
 
@@ -45,9 +44,9 @@ class Player:
         return \
         {
             'name': self.name,
-            'dice': self.dice.save,
+            'dice': self.dice.save(),
             'score': self.score,
-            'house': self.house.save,
+            'house': self.house.save(),
             'player_type': self.player_type
         }
 

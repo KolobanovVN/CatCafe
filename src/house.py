@@ -131,18 +131,17 @@ class House:
         return f'''
           7/3           
      9/5   |   8/4      
-6/4   |   6_{self.field[3][6].char}   |       
- |   6_{self.field[2][6].char}   |   6_{self.field[4][6].char}      
-5_{self.field[1][5].char}   |   5_{self.field[3][5].char}   |   3/2 
- |   5_{self.field[2][5].char}   |   5_{self.field[4][5].char}   |  
- |    |   4_{self.field[3][4].char}   |   4_{self.field[5][4].char} 
- |   4_{self.field[2][4].char}   |   4_{self.field[4][4].char}   |  
-3_{self.field[1][3].char}   |    |    |   3_{self.field[5][3].char} 
- |   3_{self.field[2][3].char}   |   3_{self.field[4][3].char}   |  
-2_{self.field[1][2].char}   |   2_{self.field[3][2].char}   |    |  
- |   2_{self.field[2][2].char}   |   2_{self.field[4][2].char}   |  
-1_{self.field[1][1].char}   |   1_{self.field[3][1].char}   |   1_{self.field[5][1].char} 
- |   1_{self.field[2][1].char}   |   1_{self.field[4][1].char}   |  
+6/4   |   6_{self.field[3][6].char()}   |       
+ |   6_{self.field[2][6].char()}   |   6_{self.field[4][6].char()}      
+5_{self.field[1][5].char()}   |   5_{self.field[3][5].char()}   |   3/2 
+ |   5_{self.field[2][5].char()}   |   5_{self.field[4][5].char()}   |  
+ |    |   4_{self.field[3][4].char()}   |   4_{self.field[5][4].char()} 
+ |   4_{self.field[2][4].char()}   |   4_{self.field[4][4].char()}   |  
+3_{self.field[1][3].char()}   |    |    |   3_{self.field[5][3].char()} 
+ |   3_{self.field[2][3].char()}   |   3_{self.field[4][3].char()}   |  
+2_{self.field[1][2].char()}   |   2_{self.field[3][2].char()}   |    |  
+ |   2_{self.field[2][2].char()}   |   2_{self.field[4][2].char()}   |  
+1_{self.field[1][1].char()}   |   1_{self.field[3][1].char()}   |   1_{self.field[5][1].char()} 
+ |   1_{self.field[2][1].char()}   |   1_{self.field[4][1].char()}   |  
  |    |    |    |    |  
- =    =    =    =    =
-'''
+ =    =    =    =    ='''
