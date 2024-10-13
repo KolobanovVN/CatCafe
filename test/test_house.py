@@ -74,7 +74,6 @@ def test_eq():
     house1 = House(None)
     house2 = House(None)
     house3 = House(house_list1)
-
     assert house1 == house2
     assert house1 != house3
 
@@ -122,28 +121,43 @@ def test_house_score():
     pass
 
 def test_yarn_score():
-    pass
+    house = House(house_list2)
+    y_max1 = [2, 2, 2, 2, 2]
+    y_max2 = [3, 3, 3, 3, 3]
+    y_max3 = [0, 1, 0, 2, 0]
+    assert house.yarn_score(y_max1) == 11
+    assert house.yarn_score(y_max2) == 6
+    assert house.yarn_score(y_max3) == 16
 
 def test_butterfly_score():
-    pass
+    house = House(house_list2)
+    assert house.butterfly_score() == 12
 
 def test_dish_score():
     pass
 
 def test_pillow_score():
-    pass
+    house = House(house_list2)
+    assert house.pillow_score() == 8
 
 def test_mouse_score():
     pass
 
 def test_tower_score():
-    pass
+    house1 = House(house_list1)
+    house2 = House(house_list2)
+    assert house1.tower_score() == 0
+    assert house2.tower_score() == 6
 
 def test_count_final_score():
     pass
 
 def test_valid_pairs():
-    pass
+    dice1 = Dice(DV.YARN)
+    dice2 = Dice(DV.PILLOW)
+    house = House(house_list1)
+    assert house.valid_pairs(4, dice1, dice2) == [[2, 5], [5, 2]]
+    assert house.valid_pairs(2, dice1, dice2) == [[2, 5]]
 
 def test_neighbors():
     pass

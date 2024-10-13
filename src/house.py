@@ -31,7 +31,6 @@ class House:
         # Инициализация дома
         for i in range(len(House.PATTERN)):
             tower = array[i].split()
-
             for j in range(len(tower)):
                 self.field[i].append(Dice(Dice.VALUES_SHORT.index(tower[j])))
 
@@ -78,9 +77,9 @@ class House:
         values = self.count_yarns()
         score = 0
         for i in range(5):
-            if values[i] == max_values[i]:  score += 8
-            elif values[i] > 0:             score += 3
-            elif values[i] == 0:            score += 0
+            if values[i] == 0:                  score += 0
+            elif values[i] == max_values[i]:    score += 8
+            elif values[i] > 0:                 score += 3
             else: raise ValueError
         return score
 
@@ -88,8 +87,7 @@ class House:
         score = 0
         for i in range(1, 6):
             for j in range(1, 7):
-                if self.field[i][j] == Dice(DV.BUTTERFLY):
-                    score += 3
+                if self.field[i][j] == Dice(DV.BUTTERFLY): score += 3
         return score
 
     def dish_score(self) -> int:
@@ -109,8 +107,7 @@ class House:
     def tower_score(self) -> int:
         score = 0
         for i in range(1,6):
-            if Dice(DV.EMPTY) not in self.field[i]:
-                score += self.SCORES[i]
+            if Dice(DV.EMPTY) not in self.field[i]: score += self.SCORES[i]
         return score
 
     # Методы подсчёта клубков, вычисления действительных пар, вычисления соседей и печати:
@@ -121,8 +118,13 @@ class House:
                 if self.field[i][j] == Dice(DV.YARN): num_of_yarns[i-1] += 1
         return num_of_yarns
 
-    def valid_pairs(self):
-        pass
+    def valid_pairs(self, tower: int, player_dice: Dice, centre_dice: Dice):
+        pairs = []
+        i = player_dice.value
+        j = centre_dice.value
+        if self.field[tower][j] == Dice(DV.EMPTY): pairs.append([i, j])
+        if self.field[tower][i] == Dice(DV.EMPTY): pairs.append([j, i])
+        return pairs
 
     def neighbors(self):
         pass
