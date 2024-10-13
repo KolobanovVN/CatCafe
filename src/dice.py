@@ -1,8 +1,8 @@
 from random import randrange
 import typing
+import enum
 
-class Dice:
-    """Кубики Котокафе"""
+class DiceValues(enum.IntEnum):
     EMPTY = 0
     HOUSE = 1
     YARN = 2
@@ -12,12 +12,12 @@ class Dice:
     MOUSE = 6
     INVALID = 7
 
-    VALUES = ['EMPTY', 'HOUSE', 'YARN', 'BUTTERFLY', 'DISH', 'PILLOW', 'MOUSE', 'INVALID']
-    VALUES_SHORT = ['E', 'H', 'Y', 'B', 'D', 'P', 'M', 'I']
+class Dice:
+    """Кубики Котокафе"""
 
     # Стандартные __init__, __repr__ и __eq__:
-    def __init__(self, value = 0):
-        if value not in range(0,8):
+    def __init__(self, value = DiceValues.EMPTY):
+        if value not in range(DiceValues.EMPTY,DiceValues.INVALID + 1):
             raise ValueError
         self.value = value
         
@@ -37,10 +37,10 @@ class Dice:
 
     # Методы броска, вывода символа и вывода слова:
     def roll(self):
-        self.value = randrange(1, 7)
+        self.value = randrange(DiceValues.HOUSE, DiceValues.MOUSE + 1)
 
     def char(self):
-        return f'{Dice.VALUES_SHORT[self.value]}'
+        return f'{DiceValues(self.value).name[0]}'
 
     def word(self):
-        return f'{Dice.VALUES[self.value]}'
+        return f'{DiceValues(self.value).name}'

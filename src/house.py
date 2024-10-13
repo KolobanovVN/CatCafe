@@ -76,15 +76,15 @@ class House:
         return fc
 
     def count_final_score(self, y_flags: list) -> int:
-        return self.h_score() + self.y_score(y_flags) + self.b_score() \
-        + self.d_score() + self.p_score() + self.m_score() + self.t_score()
+        return self.house_score() + self.yarn_score(y_flags) + self.butterfly_score() \
+        + self.dish_score() + self.pillow_score() + self.mouse_score() + self.tower_score()
 
     # Методы вычисления очков для отдельных предметов:
-    def h_score(self) -> int:
+    def house_score(self) -> int:
         return 0 # А как считать?
 
     @staticmethod
-    def y_score(flags: list) -> int:
+    def yarn_score(flags: list) -> int:
         score = 0
         for i in range(1, 6):
             if flags[i-1] is not int:
@@ -100,7 +100,7 @@ class House:
                     raise ValueError
         return score
 
-    def b_score(self) -> int:
+    def butterfly_score(self) -> int:
         score = 0
         for i in range(1, 6):
             for j in range(1, 7):
@@ -108,10 +108,10 @@ class House:
                     score += 3
         return score
 
-    def d_score(self) -> int:
+    def dish_score(self) -> int:
         return 0 # Сложный код: реализовать через 1 commit
 
-    def p_score(self) -> int:
+    def pillow_score(self) -> int:
         score = 0
         for i in range(1, 6):
             for j in range(1, 7):
@@ -119,10 +119,10 @@ class House:
                     score += j
         return score
 
-    def m_score(self) -> int:
+    def mouse_score(self) -> int:
         return 0 # Рассмотреть с преподавателем
 
-    def t_score(self) -> int:
+    def tower_score(self) -> int:
         score = 0
         for i in range(1,6):
             if Dice(Dice.EMPTY) not in self.field[i]:

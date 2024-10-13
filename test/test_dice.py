@@ -1,6 +1,6 @@
 import pytest
 
-from src.dice import Dice
+from src.dice import Dice, DiceValues
 
 
 def test_init():
@@ -86,6 +86,7 @@ def test_word():
 
 
 def test_names():
-    assert Dice.EMPTY == 0
-    assert Dice.INVALID == 7
-    assert Dice.DISH == 4
+    assert DiceValues.EMPTY.value == 0
+    assert DiceValues.INVALID.value == 7
+    assert DiceValues(4).name == 'DISH'
+    assert DiceValues(5).name == 'PILLOW'
