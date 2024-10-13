@@ -15,6 +15,8 @@ class DiceValues(enum.IntEnum):
 class Dice:
     """Кубики Котокафе"""
 
+    VALUES_SHORT = ['E', 'H', 'Y', 'B', 'D', 'P', 'M', 'I']
+
     # Стандартные __init__, __repr__ и __eq__:
     def __init__(self, value = DiceValues.EMPTY):
         if value not in range(DiceValues.EMPTY,DiceValues.INVALID + 1):
