@@ -1,4 +1,5 @@
 import json
+import hashlib
 import typing
 
 from src.dice import Dice
@@ -15,16 +16,16 @@ class Player:
         self.house = house
         self.player_type = player_type
 
+
     def __str__(self):
          return f'''
-                Игрок: {self.name}
-                Кубик: {self.dice}
-                Очки:  {self.score}
-                Игровое поле:
-                {self.house}
-                Тип игрока:
-                {self.player_type}
-                '''
+Игрок: {self.name}
+Кубик: {self.dice}
+Очки:  {self.score}
+Игровое поле:
+{self.house.print()}
+Тип игрока: {self.player_type}
+'''
 
     def __eq__(self, other: typing.Self | dict):
         if isinstance(other, dict):
@@ -34,6 +35,10 @@ class Player:
                and self.score == other.score    \
                and self.house == other.house    \
                and self.player_type == other.player_type
+
+    # Метод хеша
+    def __hash__(self) -> int:
+        return int(hashlib.sha1(self.name.encode("utf-8")).hexdigest(), 16) % (10**8)
 
     # Методы сохранения и загрузки:
     def save(self) -> dict:

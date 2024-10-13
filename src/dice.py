@@ -42,7 +42,10 @@ class Dice:
         self.value = randrange(DiceValues.HOUSE, DiceValues.MOUSE + 1)
 
     def char(self):
-        return f'{DiceValues(self.value).name[0]}'
+        if self.value == DiceValues.EMPTY:
+            return '_'
+        else:
+            return f'{DiceValues(self.value).name[0]}'
 
     def word(self):
         return f'{DiceValues(self.value).name}'

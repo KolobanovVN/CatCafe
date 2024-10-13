@@ -105,3 +105,12 @@ def test_tower_score():
 
 def test_count_final_score():
     pass
+
+def test_valid_pairs():
+    pass
+
+def test_neighbors():
+    pass
+
+def test_print():
+    pass

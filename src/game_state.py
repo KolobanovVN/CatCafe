@@ -28,3 +28,9 @@ class GameState:
 
     def next_player(self):
         pass
+
+    def take_dice(self):
+        pass
+
+    def draw_object(self):
+        pass

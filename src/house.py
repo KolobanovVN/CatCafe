@@ -31,6 +31,7 @@ class House:
         # Инициализация дома
         for i in range(len(House.PATTERN)):
             tower = array[i].split()
+
             for j in range(len(tower)):
                 self.field[i].append(Dice(Dice.VALUES_SHORT.index(tower[j])))
 
@@ -112,10 +113,36 @@ class House:
                 score += self.SCORES[i]
         return score
 
-    # Методы подсчёта клубков, вычисления соседей:
+    # Методы подсчёта клубков, вычисления действительных пар, вычисления соседей и печати:
     def count_yarns(self) -> list:
         num_of_yarns = [0 for _ in range(5)]
         for i in range(1, 6):
             for j in range(1, 7):
                 if self.field[i][j] == Dice(DV.YARN): num_of_yarns[i-1] += 1
         return num_of_yarns
+
+    def valid_pairs(self):
+        pass
+
+    def neighbors(self):
+        pass
+
+    def print(self):
+        return f'''
+          7/3           
+     9/5   |   8/4      
+6/4   |   6_{self.field[3][6].char}   |       
+ |   6_{self.field[2][6].char}   |   6_{self.field[4][6].char}      
+5_{self.field[1][5].char}   |   5_{self.field[3][5].char}   |   3/2 
+ |   5_{self.field[2][5].char}   |   5_{self.field[4][5].char}   |  
+ |    |   4_{self.field[3][4].char}   |   4_{self.field[5][4].char} 
+ |   4_{self.field[2][4].char}   |   4_{self.field[4][4].char}   |  
+3_{self.field[1][3].char}   |    |    |   3_{self.field[5][3].char} 
+ |   3_{self.field[2][3].char}   |   3_{self.field[4][3].char}   |  
+2_{self.field[1][2].char}   |   2_{self.field[3][2].char}   |    |  
+ |   2_{self.field[2][2].char}   |   2_{self.field[4][2].char}   |  
+1_{self.field[1][1].char}   |   1_{self.field[3][1].char}   |   1_{self.field[5][1].char} 
+ |   1_{self.field[2][1].char}   |   1_{self.field[4][1].char}   |  
+ |    |    |    |    |  
+ =    =    =    =    =
+'''

@@ -73,7 +73,7 @@ def test_char():
     d3 = Dice()
     assert d1.char() == 'P'
     assert d2.char() == 'Y'
-    assert d3.char() == 'E'
+    assert d3.char() == '_'
 
 
 def test_word():
