@@ -17,8 +17,10 @@ class House:
 
     EVEN = [[0, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0]]
     ODD  = [[0, 1], [1, 1], [1, 0],  [0, -1], [-1, 0],  [-1, 1]]
-
     SCORES = ['null', 4, 5, 3, 4, 2]
+
+    SAFE_TOWER = range(1, 6)
+    SAFE_FLOOR = range(1, 7)
 
     # Стандартные __init__, __repr__ и __eq__:
     def __init__(self, array: None | list):
@@ -61,7 +63,7 @@ class House:
     # Методы подсчёта заполненных башен и итоговых очков:
     def count_filled_columns(self) -> int:
         fc = 0
-        for i in range(1,6):
+        for i in House.SAFE_TOWER:
             if Dice(DV.EMPTY) not in self.field[i]: fc += 1
         return fc
 
@@ -76,7 +78,7 @@ class House:
     def yarn_score(self, max_values: list) -> int:
         values = self.count_yarns()
         score = 0
-        for i in range(5):
+        for i in range(len(House.SAFE_TOWER)):
             if values[i] == 0:                  score += 0
             elif values[i] == max_values[i]:    score += 8
             elif values[i] > 0:                 score += 3
@@ -85,8 +87,8 @@ class House:
 
     def butterfly_score(self) -> int:
         score = 0
-        for i in range(1, 6):
-            for j in range(1, 7):
+        for i in House.SAFE_TOWER:
+            for j in House.SAFE_FLOOR:
                 if self.field[i][j] == Dice(DV.BUTTERFLY): score += 3
         return score
 
@@ -95,10 +97,9 @@ class House:
 
     def pillow_score(self) -> int:
         score = 0
-        for i in range(1, 6):
-            for j in range(1, 7):
-                if self.field[i][j] == Dice(DV.PILLOW):
-                    score += j
+        for i in House.SAFE_TOWER:
+            for j in House.SAFE_FLOOR:
+                if self.field[i][j] == Dice(DV.PILLOW): score += j
         return score
 
     def mouse_score(self) -> int:
@@ -106,19 +107,19 @@ class House:
 
     def tower_score(self) -> int:
         score = 0
-        for i in range(1,6):
+        for i in House.SAFE_TOWER:
             if Dice(DV.EMPTY) not in self.field[i]: score += self.SCORES[i]
         return score
 
     # Методы подсчёта клубков, вычисления действительных пар, вычисления соседей и печати:
     def count_yarns(self) -> list:
-        num_of_yarns = [0 for _ in range(5)]
-        for i in range(1, 6):
-            for j in range(1, 7):
+        num_of_yarns = [0 for _ in range(len(House.SAFE_TOWER))]
+        for i in House.SAFE_TOWER:
+            for j in House.SAFE_FLOOR:
                 if self.field[i][j] == Dice(DV.YARN): num_of_yarns[i-1] += 1
         return num_of_yarns
 
-    def valid_pairs(self, tower: int, player_dice: Dice, centre_dice: Dice):
+    def valid_pairs(self, tower: int, player_dice: Dice, centre_dice: Dice) -> list:
         pairs = []
         i = player_dice.value
         j = centre_dice.value
@@ -126,8 +127,16 @@ class House:
         if self.field[tower][i] == Dice(DV.EMPTY): pairs.append([j, i])
         return pairs
 
-    def neighbors(self):
-        pass
+    @staticmethod
+    def neighbors(tower: int, floor: int)  -> list:
+        neighbors_list = []
+        if tower not in House.SAFE_TOWER: raise ValueError
+        if floor not in House.SAFE_FLOOR: raise ValueError
+        if tower % 2 == 1:
+            neighbors_list = [[tower + House.ODD[i][0], floor + House.ODD[i][1]] for i in range(len(House.ODD))]
+        if tower % 2 == 0:
+            neighbors_list = [[tower + House.EVEN[i][0], floor + House.EVEN[i][1]] for i in range(len(House.EVEN))]
+        return neighbors_list
 
     def print(self):
         return f'''

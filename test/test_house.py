@@ -160,7 +160,14 @@ def test_valid_pairs():
     assert house.valid_pairs(2, dice1, dice2) == [[2, 5]]
 
 def test_neighbors():
-    pass
+    #assert House.neighbors()
+    #assert House.neighbors()
+
+    with pytest.raises(ValueError):
+        House.neighbors(1, 0)
+
+    with pytest.raises(ValueError):
+        House.neighbors(0, 1)
 
 def test_print():
     house1 = House(None)

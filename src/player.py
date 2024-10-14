@@ -7,6 +7,7 @@ from src.house import House
 
 
 class Player:
+    """Игрок Котокафе"""
 
     # Стандартные __init__, __str__ и __eq__:
     def __init__(self, name: str, dice: Dice, score: int, house: House, player_type: str):
