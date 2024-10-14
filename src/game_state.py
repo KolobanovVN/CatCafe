@@ -1,36 +1,72 @@
-import typing
-
 from src.dice import Dice
-from src.house import House
 from src.player import Player
 
 
 class GameState:
 
     # Стандартные __init__, __eq__:
-    def __init__(self):
-        pass
+    def __init__(self, players: list[Player], round_g: int = 1, phase: int = 0, turn: int = 0, dices: str = ''):
+        self.players: list[Player] = players
+        self.round_g: int = round_g
+        self.phase: int = phase
+        self.turn: int = turn
+        self.dices: int = dices
+        self.dices_normal = []
+        raw_dices = dices.split()
+        for i in raw_dices:
+            self.dices_normal.append(Dice(i))
 
     def __eq__(self, other):
-        pass
+        if self.players != other.players:
+            return False
+        if self.round_g != other.round_g:
+            return False
+        if self.phase != other.phase:
+            return False
+        if self.turn != other.turn:
+            return False
+        if self.dices != other.dices:
+            return False
+        if self.dices_normal != other.dices_normal:
+            return False
+        return True
 
     # Методы сохранения и загрузки:
     def save(self) -> dict:
-        pass
+        return {
+            "round_g": int(self.round_g),
+            "phase": int(self.phase),
+            "turn": int(self.turn),
+            "dices": str(self.dices),
+            "players": [p.save() for p in self.players],
+        }
 
     @classmethod
     def load(cls, data: dict):
-        pass
+        players = [Player.load(d) for d in data["players"]]
+
+        return cls(
+            players = players,
+            round_g = int(data["round_g"]),
+            phase = int(data["phase"]),
+            turn = int(data["turn"]),
+            dices = str(data["dices"]),
+        )
 
     # Другие методы:
     def current_player(self) -> Player:
-        pass
+        return self.players[self.turn]
 
     def next_player(self):
-        pass
+        """Ход переходит к следующему игроку."""
+        n = len(self.players)
+        self.turn = (self.turn + 1) % n
 
-    def take_dice(self):
-        pass
+    def take_dice(self, choice_dice: int):
+        """Текущий игрок берёт кубик."""
+        self.current_player().dice = self.dices_normal.pop(Dice(choice_dice))
 
-    def draw_object(self):
-        pass
+    def draw_object(self, tower: int, choice_pair: int):
+        """Текущий игрок рисует у себя объект"""
+        pairs = self.current_player().house.valid_pairs(tower, self.current_player().dice, self.dices_normal[0])
+        self.current_player().house.field[tower][pairs[choice_pair][1]] = Dice(pairs[choice_pair][0])

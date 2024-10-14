@@ -1,3 +1,5 @@
+from enum import unique
+
 from src.dice import Dice
 from src.dice import DiceValues as DV
 import typing
@@ -73,7 +75,15 @@ class House:
 
     # Методы вычисления очков для отдельных предметов:
     def house_score(self) -> int:
-        return 0
+        score = 0
+        for i in House.SAFE_TOWER:
+            for j in House.SAFE_FLOOR:
+                if self.field[i][j] == Dice(DV.EMPTY):      score += 0
+                elif self.field[i][j] == Dice(DV.INVALID):  score += 0
+                elif self.field[i][j] == Dice(DV.MOUSE):    score += -2
+                elif self.field[i][j] == Dice(DV.HOUSE):    score += 2
+                else: score += 1
+        return score
 
     def yarn_score(self, max_values: list) -> int:
         values = self.count_yarns()
@@ -93,7 +103,19 @@ class House:
         return score
 
     def dish_score(self) -> int:
-        return 0
+        score = 0
+        unique_items = [Dice(i) for i in range(DV.HOUSE, DV.MOUSE + 1)]
+        for i in House.SAFE_TOWER:
+            for j in House.SAFE_FLOOR:
+                if self.field[i][j] == Dice(DV.DISH):
+                    current_neighbors = self.neighbors(i, j)
+                    current_unique_items = unique_items.copy()
+                    for k in range(len(current_neighbors)):
+                        if self.field[current_neighbors[k][0]][current_neighbors[k][1]] in current_unique_items:
+                            score += 1
+                            del_dice = self.field[current_neighbors[k][0]][current_neighbors[k][1]]
+                            current_unique_items.remove(del_dice)
+        return score
 
     def pillow_score(self) -> int:
         score = 0
@@ -127,11 +149,9 @@ class House:
         if self.field[tower][i] == Dice(DV.EMPTY): pairs.append([j, i])
         return pairs
 
-    @staticmethod
-    def neighbors(tower: int, floor: int)  -> list:
+    def neighbors(self, tower: int, floor: int)  -> list:
         neighbors_list = []
-        if tower not in House.SAFE_TOWER: raise ValueError
-        if floor not in House.SAFE_FLOOR: raise ValueError
+        if self.field[tower][floor] == Dice(DV.INVALID): raise ValueError
         if tower % 2 == 1:
             neighbors_list = [[tower + House.ODD[i][0], floor + House.ODD[i][1]] for i in range(len(House.ODD))]
         if tower % 2 == 0:

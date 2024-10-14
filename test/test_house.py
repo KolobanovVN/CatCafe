@@ -21,6 +21,14 @@ house_list2 = ['I I I I I I I I',
                'I P I P P I I I',
                'I I I I I I I I']
 
+house_list3 = ['I I I I I I I I',
+               'I M M M I E I I',
+               'I M M H E E E I',
+               'I H H I E M E I',
+               'I E M M E E E I',
+               'I E I E E I I I',
+               'I I I I I I I I']
+
 house_str_pattern = '''
           7/3           
      9/5   |   8/4      
@@ -118,7 +126,10 @@ def test_count_yarns():
     assert house.count_yarns() == [0, 1, 0, 2, 0]
 
 def test_house_score():
-    pass
+    house1 = House(house_list2)
+    house2 = House(house_list3)
+    assert house1.house_score() == 13
+    assert house2.house_score() == -10
 
 def test_yarn_score():
     house = House(house_list2)
@@ -134,14 +145,20 @@ def test_butterfly_score():
     assert house.butterfly_score() == 12
 
 def test_dish_score():
-    pass
+    house1 = House(house_list1)
+    house2 = House(house_list2)
+    assert house1.dish_score() == 1
+    assert house2.dish_score() == 3
 
 def test_pillow_score():
     house = House(house_list2)
     assert house.pillow_score() == 8
 
 def test_mouse_score():
-    pass
+    house1 = House(house_list1)
+    house2 = House(house_list3)
+    assert house1.mouse_score() == 4
+    assert house2.mouse_score() == 30
 
 def test_tower_score():
     house1 = House(house_list1)
@@ -150,7 +167,12 @@ def test_tower_score():
     assert house2.tower_score() == 6
 
 def test_count_final_score():
-    pass
+    house1 = House(house_list1)
+    house2 = House(house_list2)
+    house3 = House(house_list3)
+    assert house1.count_final_score([0, 0, 0, 0, 0]) == 8
+    assert house2.count_final_score([0, 1, 0, 2, 0]) == 52
+    assert house3.count_final_score([0, 0, 0, 0, 0]) == 20
 
 def test_valid_pairs():
     dice1 = Dice(DV.YARN)
@@ -160,14 +182,15 @@ def test_valid_pairs():
     assert house.valid_pairs(2, dice1, dice2) == [[2, 5]]
 
 def test_neighbors():
-    #assert House.neighbors()
-    #assert House.neighbors()
+    house = House(None)
+    assert house.neighbors(2, 2) == [[2, 3], [3, 2], [3, 1], [2, 1], [1, 1], [1, 2]]
+    assert house.neighbors(4, 4) == [[4, 5], [5, 4], [5, 3], [4, 3], [3, 3], [3, 4]]
 
     with pytest.raises(ValueError):
-        House.neighbors(1, 0)
+        house.neighbors(1, 0)
 
     with pytest.raises(ValueError):
-        House.neighbors(0, 1)
+        house.neighbors(0, 1)
 
 def test_print():
     house1 = House(None)

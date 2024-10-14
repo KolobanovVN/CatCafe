@@ -119,7 +119,7 @@ Server: Раунд закончен.
 ## Формат save-файла
 ```json
 {
-  "round": 4,
+  "round_g": 4,
   "phase": 3,
   "turn": 0,
   "dices": "4",
