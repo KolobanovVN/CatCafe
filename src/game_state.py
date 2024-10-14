@@ -14,7 +14,7 @@ class GameState:
         self.dices_normal = []
         raw_dices = dices.split()
         for i in raw_dices:
-            self.dices_normal.append(Dice(i))
+            self.dices_normal.append(Dice(int(i)))
 
     def __eq__(self, other):
         if self.players != other.players:
@@ -64,9 +64,15 @@ class GameState:
 
     def take_dice(self, choice_dice: int):
         """Текущий игрок берёт кубик."""
-        self.current_player().dice = self.dices_normal.pop(Dice(choice_dice))
+        self.current_player().dice = Dice(choice_dice)
+        self.dices_normal.remove(Dice(choice_dice))
+        self.update_dices()
 
     def draw_object(self, tower: int, choice_pair: int):
         """Текущий игрок рисует у себя объект"""
         pairs = self.current_player().house.valid_pairs(tower, self.current_player().dice, self.dices_normal[0])
-        self.current_player().house.field[tower][pairs[choice_pair][1]] = Dice(pairs[choice_pair][0])
+        self.current_player().house.field[tower][pairs[choice_pair - 1][0]] = Dice(pairs[choice_pair - 1][1])
+
+    # Метод обновления строки dices
+    def update_dices(self):
+        self.dices = ' '.join(str(self.dices_normal[i].value) for i in range(len(self.dices_normal)))
