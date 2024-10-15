@@ -170,6 +170,7 @@ def test_count_final_score():
     house1 = House(house_list1)
     house2 = House(house_list2)
     house3 = House(house_list3)
+
     assert house1.count_final_score([0, 0, 0, 0, 0]) == 8
     assert house2.count_final_score([0, 1, 0, 2, 0]) == 52
     assert house3.count_final_score([0, 0, 0, 0, 0]) == 20

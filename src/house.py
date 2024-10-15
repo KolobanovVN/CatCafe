@@ -1,4 +1,4 @@
-from enum import unique
+from itertools import count
 
 from src.dice import Dice
 from src.dice import DiceValues as DV
@@ -76,13 +76,16 @@ class House:
     # Методы вычисления очков для отдельных предметов:
     def house_score(self) -> int:
         score = 0
+        count_h = 0
         for i in House.SAFE_TOWER:
             for j in House.SAFE_FLOOR:
                 if self.field[i][j] == Dice(DV.EMPTY):      score += 0
                 elif self.field[i][j] == Dice(DV.INVALID):  score += 0
                 elif self.field[i][j] == Dice(DV.MOUSE):    score += -2
-                elif self.field[i][j] == Dice(DV.HOUSE):    score += 2
+                elif self.field[i][j] == Dice(DV.HOUSE):    score += 2; count_h += 1
                 else: score += 1
+        if count_h == 0:
+            score = 0
         return score
 
     def yarn_score(self, max_values: list) -> int:
@@ -125,7 +128,19 @@ class House:
         return score
 
     def mouse_score(self) -> int:
-        return 0
+        score = 0
+        remaining_mice = []
+        for i in House.SAFE_TOWER:
+            for j in House.SAFE_FLOOR:
+                if self.field[i][j] == Dice(DV.MOUSE): remaining_mice.append([i, j])
+        while remaining_mice:
+            mouse = remaining_mice.pop()
+            mice = self.get_all_connected_mice(mouse, remaining_mice)
+            if mice == 1: score += 2
+            if mice == 2: score += 6
+            if mice == 3: score += 12
+            if mice == 4: score += 20
+        return score
 
     def tower_score(self) -> int:
         score = 0
@@ -176,3 +191,13 @@ class House:
  |   1_{self.field[2][1].char()}   |   1_{self.field[4][1].char()}   |  
  |    |    |    |    |  
  =    =    =    =    ='''
+
+    # Специальный метод для метода mouse_score()
+    def get_all_connected_mice(self, mouse, remaining_mice):
+        count = 1
+        for neighbor in self.neighbors(mouse[0], mouse[1]):
+            if neighbor in remaining_mice:
+                neighbor_selected = neighbor
+                remaining_mice.remove(neighbor_selected)
+                count += self.get_all_connected_mice(neighbor_selected, remaining_mice)
+        return count
