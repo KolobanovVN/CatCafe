@@ -1,7 +1,6 @@
 import pytest
 
 from src.dice import Dice
-from src.house import House
 from src.player import Player
 from src.game_state import GameState
 
@@ -56,7 +55,7 @@ def test_init():
     assert game.round_g == 4
     assert game.phase == 3
     assert game.turn == 0
-    assert str(game.dices) == "4"
+    assert game.dices_normal == [Dice(4)]
 
 def test_eq():
     players = [alice, bob]
@@ -113,14 +112,3 @@ def test_draw_object():
 
     game.draw_object(4, 1)
     assert game.current_player().house.field[4][3] == Dice(2)
-
-def test_update_dices():
-    players = [alice, bob]
-    game = GameState(players=players, round_g=5, phase=1, turn=0, dices="2 3 6")
-    assert game.dices == "2 3 6"
-    assert game.dices_normal == [Dice(2), Dice(3), Dice(6)]
-
-    game.dices_normal.remove(Dice(6))
-    assert game.dices_normal == [Dice(2), Dice(3)]
-    game.update_dices()
-    assert game.dices == "2 3"

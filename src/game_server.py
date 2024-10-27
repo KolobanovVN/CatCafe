@@ -1,8 +1,9 @@
 import inspect
 
 from src.dice import Dice
+from src.dice import DiceValues as DV
 from src.house import House
-from src.Player import Player
+from src.player import Player
 from src.game_state import GameState
 from src.player_interaction import PlayerInteraction
 import src.player_interactions as all_player_types
@@ -12,9 +13,11 @@ import logging
 import enum
 
 class GamePhase(enum.StrEnum):
+    NEW_DICES = "New dices"
     CHOOSE_DICE = "Choose dice"
     DRAW_OBJECT = "Draw object"
     CHECK_TOWERS = "Check towers"
+    COUNT_SCORE = "Count score"
     NEXT_PLAYER = "Switch current player"
     DECLARE_WINNER = "Declare a winner"
     GAME_END = "Game ended"
@@ -30,18 +33,60 @@ class GameServer:
 
     @classmethod
     def new_game(cls):
-        pass
+        player_count = cls.request_player_count()
+        player_types = {}
+        for p in range(player_count):
+            name, kind = cls.request_player()
+            player = Player(name, Dice(DV.EMPTY), 0, House(None), "dummy_ai")
+            player_types[player] = kind
+        game_state = GameState(list(player_types.keys()))
+        result = cls(player_types, game_state)
+        return result
 
     def run(self):
-        pass
+        current_phase = GamePhase.NEW_DICES
+        while current_phase != GamePhase.GAME_END:
+            phases = {
+                GamePhase.NEW_DICES: self.make_new_dices,
+                GamePhase.CHOOSE_DICE: self.choose_dice_phase,
+                GamePhase.DRAW_OBJECT: self.draw_object_phase,
+                GamePhase.CHECK_TOWERS: self.check_towers_phase,
+                GamePhase.COUNT_SCORE: self.count_score,
+                GamePhase.NEXT_PLAYER: self.next_player,
+                GamePhase.DECLARE_WINNER: self.declare_winner,
+            }
+            current_phase = phases[current_phase]()
 
     @staticmethod
     def request_player_count() -> int:
-        pass
+        while True:
+            try:
+                player_count = int(input("Сколько игроков? "))
+                if 2 <= player_count <= 4:
+                    return player_count
+            except ValueError:
+                pass
+            print("Введите кол-во игроков от 2 до 4")
 
     @staticmethod
     def request_player() -> (str, PlayerInteraction):
-        pass
+        while True:
+            name = input("Как зовут игрока? ")
+            if name.isalpha():
+                break
+            print("Имя игрока должно содержать только буквы")
+
+        kind = "dummy_ai"
+        return name, kind
+
+    def make_new_dices(self) -> GamePhase:
+        new_dices = []
+        for i in range(len(self.player_types)+1):
+            dice = Dice()
+            dice.roll()
+            new_dices.append(dice)
+        self.game_state.dices_normal = new_dices
+        return GamePhase.CHOOSE_DICE
 
     def choose_dice_phase(self) -> GamePhase:
         pass
@@ -50,13 +95,39 @@ class GameServer:
         pass
 
     def check_towers_phase(self) -> GamePhase:
-        pass
+        towers = []
+        for i in range(len(self.player_types)):
+            columns = self.player_types[i].house.count_filled_columns()
+            towers.append(columns)
+        if max(towers) >= 3:
+            return GamePhase.COUNT_SCORE
+        else:
+            self.game_state.phase = 0
+            return GamePhase.NEW_DICES
 
-    def next_player_phase(self) -> GamePhase:
-        pass
+    def count_score(self) -> GamePhase:
+        scores = []
+        for i in range(len(self.player_types)):
+            score = self.player_types[i].house.count_final_score()
+            scores.append(score)
+        self.game_state.turn = max(scores).index
+        return GamePhase.DECLARE_WINNER
 
-    def declare_winner_phase(self) -> GamePhase:
-        pass
+    def next_player(self) -> GamePhase:
+        if self.game_state.turn == len(self.player_types) - 1:
+            self.game_state.phase += 1
+            self.game_state.turn = 0
+        self.game_state.next_player()
+        if self.game_state.phase == 1:
+            return GamePhase.CHOOSE_DICE
+        if self.game_state.phase == 2:
+            return GamePhase.DRAW_OBJECT
+        if self.game_state.phase == 3:
+            return GamePhase.CHECK_TOWERS
+
+    def declare_winner(self) -> GamePhase:
+        print(f"{self.game_state.current_player()} is the winner!")
+        return GamePhase.GAME_END
 
     def inform_all(self, method: str, *args, **kwargs):
         pass
