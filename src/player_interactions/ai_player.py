@@ -5,13 +5,13 @@ from src.player_interaction import PlayerInteraction
 class Bot(PlayerInteraction):
 
     @classmethod
-    def choose_dice(cls, dices):
+    def choose_dice(cls, dices): # Упрости!
         random_index = randrange(len(dices))
         choice_dice = dices[random_index].value
         return choice_dice
 
     @classmethod
-    def draw_object(cls, valid_pairs):
+    def draw_object(cls, valid_pairs): # Упрости!
         if len(valid_pairs) == 0:
             choice_pair = -1
         elif len(valid_pairs) == 1:

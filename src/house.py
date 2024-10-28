@@ -148,7 +148,7 @@ class House:
             if mice == 1: score += 2
             elif mice == 2: score += 6
             elif mice == 3: score += 12
-            elif mice == 4: score += 20
+            elif mice >= 4: score += 20
         return score
 
     def score_tower(self) -> int:

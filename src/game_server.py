@@ -37,7 +37,7 @@ class GameServer:
         player_types = {}
         for p in range(player_count):
             name, kind = cls.request_player()
-            player = Player(name, Dice(DV.EMPTY), 0, House(None), "dummy_ai")
+            player = Player(name = name, player_type = "dummy_ai")
             player_types[player] = kind
         game_state = GameState(list(player_types.keys()))
         result = cls(player_types, game_state)
@@ -80,7 +80,7 @@ class GameServer:
         return name, kind
 
     def make_new_dices(self) -> GamePhase:
-        new_dices = []
+        new_dices = [] # В одну строку
         for i in range(len(self.player_types)+1):
             dice = Dice()
             dice.roll()
@@ -95,7 +95,7 @@ class GameServer:
         pass
 
     def check_towers_phase(self) -> GamePhase:
-        towers = []
+        towers = [] # В одну строку
         for i in range(len(self.player_types)):
             columns = self.player_types[i].house.count_filled_columns()
             towers.append(columns)
@@ -105,8 +105,8 @@ class GameServer:
             self.game_state.phase = 0
             return GamePhase.NEW_DICES
 
-    def count_score(self) -> GamePhase:
-        scores = []
+    def count_score(self) -> GamePhase: # Не отдельная фаза!
+        scores = [] # В одну строку
         for i in range(len(self.player_types)):
             score = self.player_types[i].house.count_final_score()
             scores.append(score)

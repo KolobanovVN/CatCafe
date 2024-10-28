@@ -158,7 +158,7 @@ def test_mouse_score():
     house1 = House(house_list1)
     house2 = House(house_list3)
     assert house1.score_mouse() == 4
-    assert house2.score_mouse() == 30
+    assert house2.score_mouse() == 28
 
 def test_tower_score():
     house1 = House(house_list1)
@@ -171,9 +171,22 @@ def test_count_final_score():
     house2 = House(house_list2)
     house3 = House(house_list3)
 
+    assert house1.score_butterfly() == 3
+    assert house1.score_dish() == 1
+    assert house1.score_mouse() == 4
     assert house1.count_final_score([0, 0, 0, 0, 0]) == 8
-    assert house2.count_final_score([0, 1, 0, 2, 0]) == 52
-    assert house3.count_final_score([0, 0, 0, 0, 0]) == 20
+
+    assert house2.score_house() == 13
+    assert house2.score_yarn([0, 1, 0, 2, 0]) == 16
+    assert house2.score_butterfly() == 12
+    assert house2.score_dish() == 3
+    assert house2.score_pillow() == 8
+    assert house2.score_tower() == 6
+    assert house2.count_final_score([0, 1, 0, 2, 0]) == 58
+
+    assert house3.score_mouse() == 28
+    assert house3.score_house() == -10
+    assert house3.count_final_score([0, 0, 0, 0, 0]) == 18
 
 def test_valid_pairs():
     dice1 = Dice(DV.YARN)
