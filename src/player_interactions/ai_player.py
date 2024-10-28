@@ -1,24 +1,17 @@
-from random import randrange
+from random import choice
 
 from src.player_interaction import PlayerInteraction
 
-class Bot(PlayerInteraction):
+class DummyAI(PlayerInteraction):
 
     @classmethod
-    def choose_dice(cls, dices): # Упрости!
-        random_index = randrange(len(dices))
-        choice_dice = dices[random_index].value
-        return choice_dice
+    def choose_dice(cls, dices):
+        return choice([dice.value for dice in dices])
 
     @classmethod
-    def draw_object(cls, valid_pairs): # Упрости!
-        if len(valid_pairs) == 0:
-            choice_pair = -1
-        elif len(valid_pairs) == 1:
-            choice_pair = 1
-        else:
-            choice_pair = randrange(1, 3)
-        return choice_pair
+    def draw_object(cls, valid_pairs):
+        if len(valid_pairs) == 0: return None
+        else: return choice(range(1,6)), valid_pairs.index(choice(valid_pairs)) + 1
 
     @classmethod
     def inform_dice_chosen(cls):

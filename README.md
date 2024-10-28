@@ -138,7 +138,7 @@ Server: Раунд закончен.
         "I E I E E I I I",
         "I I I I I I I I"
       ],
-      "player_type": "human"
+      "player_type": "Human"
     },
     {
       "name": "Bob",
@@ -154,7 +154,7 @@ Server: Раунд закончен.
         "I E I E E I I I",
         "I I I I I I I I"
       ],
-      "player_type": "dummy_ai"
+      "player_type": "DummyAI"
     }
   ]
 }

@@ -2,7 +2,7 @@ import json
 import hashlib
 import typing
 
-from src.dice import Dice
+from src.dice import Dice, DiceValues
 from src.house import House
 
 
@@ -10,7 +10,8 @@ class Player:
     """Игрок Котокафе"""
 
     # Стандартные __init__, __str__ и __eq__:
-    def __init__(self, name: str, dice: Dice, score: int, house: House, player_type: str):
+    def __init__(self, name: str, dice: Dice = Dice(DiceValues.EMPTY), score: int = 0,
+                 house: House = House(None), player_type: str = ''):
         self.name = name
         self.dice = dice
         self.score = score

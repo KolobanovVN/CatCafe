@@ -37,7 +37,7 @@ class GameServer:
         player_types = {}
         for p in range(player_count):
             name, kind = cls.request_player()
-            player = Player(name = name, player_type = "dummy_ai")
+            player = Player(name = name, player_type = "DummyAI")
             player_types[player] = kind
         game_state = GameState(list(player_types.keys()))
         result = cls(player_types, game_state)
@@ -89,10 +89,19 @@ class GameServer:
         return GamePhase.CHOOSE_DICE
 
     def choose_dice_phase(self) -> GamePhase:
-        pass
+        current_player = self.game_state.current_player()
+        interaction = self.player_types[current_player]
+        choice_dice = interaction.choose_dice(self.game_state.dices_normal)
+        self.game_state.take_dice(choice_dice)
+        return GamePhase.NEXT_PLAYER
 
     def draw_object_phase(self) -> GamePhase:
-        pass
+        current_player = self.game_state.current_player()
+        interaction = self.player_types[current_player]
+        tower, choice_pair = interaction.draw_object(current_player.house.valid_pairs())
+        if choice_pair is not None:
+            self.game_state.draw_object(tower, choice_pair)
+        return GamePhase.NEXT_PLAYER
 
     def check_towers_phase(self) -> GamePhase:
         towers = [] # В одну строку
@@ -114,15 +123,12 @@ class GameServer:
         return GamePhase.DECLARE_WINNER
 
     def next_player(self) -> GamePhase:
-        if self.game_state.turn == len(self.player_types) - 1:
-            self.game_state.phase += 1
-            self.game_state.turn = 0
         self.game_state.next_player()
-        if self.game_state.phase == 1:
+        if self.game_state.dices_normal > 1:
             return GamePhase.CHOOSE_DICE
-        if self.game_state.phase == 2:
+        elif self.game_state.current_player().dice != Dice(DV.EMPTY):
             return GamePhase.DRAW_OBJECT
-        if self.game_state.phase == 3:
+        else:
             return GamePhase.CHECK_TOWERS
 
     def declare_winner(self) -> GamePhase:
@@ -130,9 +136,13 @@ class GameServer:
         return GamePhase.GAME_END
 
     def inform_all(self, method: str, *args, **kwargs):
-        pass
+        for p in self.player_types.values():
+            getattr(p, method)(*args, **kwargs)
 
 def __main__():
+    load_from_file = False
+    if load_from_file:
+        server = GameServer.load_game()
     server = GameServer.new_game()
     server.run()
 

@@ -1,4 +1,4 @@
-from src.dice import Dice
+from src.dice import Dice, DiceValues
 from src.player import Player
 
 
@@ -67,3 +67,4 @@ class GameState:
         """Текущий игрок рисует у себя объект"""
         pairs = self.current_player().house.valid_pairs(tower, self.current_player().dice, self.dices_normal[0])
         self.current_player().house.field[tower][pairs[choice_pair - 1][0]] = Dice(pairs[choice_pair - 1][1])
+        self.current_player().dice = Dice(DiceValues.EMPTY)
