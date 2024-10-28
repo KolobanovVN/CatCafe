@@ -128,43 +128,43 @@ def test_count_yarns():
 def test_house_score():
     house1 = House(house_list2)
     house2 = House(house_list3)
-    assert house1.house_score() == 13
-    assert house2.house_score() == -10
+    assert house1.score_house() == 13
+    assert house2.score_house() == -10
 
 def test_yarn_score():
     house = House(house_list2)
     y_max1 = [2, 2, 2, 2, 2]
     y_max2 = [3, 3, 3, 3, 3]
     y_max3 = [0, 1, 0, 2, 0]
-    assert house.yarn_score(y_max1) == 11
-    assert house.yarn_score(y_max2) == 6
-    assert house.yarn_score(y_max3) == 16
+    assert house.score_yarn(y_max1) == 11
+    assert house.score_yarn(y_max2) == 6
+    assert house.score_yarn(y_max3) == 16
 
 def test_butterfly_score():
     house = House(house_list2)
-    assert house.butterfly_score() == 12
+    assert house.score_butterfly() == 12
 
 def test_dish_score():
     house1 = House(house_list1)
     house2 = House(house_list2)
-    assert house1.dish_score() == 1
-    assert house2.dish_score() == 3
+    assert house1.score_dish() == 1
+    assert house2.score_dish() == 3
 
 def test_pillow_score():
     house = House(house_list2)
-    assert house.pillow_score() == 8
+    assert house.score_pillow() == 8
 
 def test_mouse_score():
     house1 = House(house_list1)
     house2 = House(house_list3)
-    assert house1.mouse_score() == 4
-    assert house2.mouse_score() == 30
+    assert house1.score_mouse() == 4
+    assert house2.score_mouse() == 30
 
 def test_tower_score():
     house1 = House(house_list1)
     house2 = House(house_list2)
-    assert house1.tower_score() == 0
-    assert house2.tower_score() == 6
+    assert house1.score_tower() == 0
+    assert house2.score_tower() == 6
 
 def test_count_final_score():
     house1 = House(house_list1)
