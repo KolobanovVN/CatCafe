@@ -1,5 +1,6 @@
 from random import choice
 
+from src.house import House
 from src.player_interaction import PlayerInteraction
 
 class DummyAI(PlayerInteraction):
@@ -11,7 +12,7 @@ class DummyAI(PlayerInteraction):
     @classmethod
     def draw_object(cls, valid_pairs):
         if len(valid_pairs) == 0: return None
-        else: return choice(range(1,6)), valid_pairs.index(choice(valid_pairs)) + 1
+        else: return choice(range(House.SAFE_TOWER)), valid_pairs.index(choice(valid_pairs)) + 1
 
     @classmethod
     def inform_dice_chosen(cls):
