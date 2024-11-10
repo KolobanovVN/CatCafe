@@ -1,3 +1,5 @@
+import json
+
 from src.dice import Dice
 from src.dice import DiceValues as DV
 from src.player import Player
@@ -19,12 +21,33 @@ class GamePhase(enum.StrEnum):
 
 class GameServer:
     def __init__(self, player_types, game_state):
-        self.game_state = game_state
         self.player_types = player_types
+        self.game_state = game_state
 
     @classmethod
-    def load_game(cls):
-        pass
+    def load_game(cls, filename):
+        with open(filename, 'r') as file_in:
+            data = json.load(file_in)
+            game_state = GameState.load(data)
+            player_types = {}
+            for player, player_data in zip(game_state.players, data['players']):
+                kind = player_data['kind']
+                kind = getattr(all_player_types, kind)
+                player_types[player] = kind
+            return GameServer(player_types = player_types, game_state = game_state)
+
+
+    def save(self, filename):
+        data = self.save_to_dict()
+        with open(filename, 'w') as file_out:
+            json.dumps(data, file_out, indent = 4)
+
+    def save_to_dict(self):
+        data = self.game_state.save()
+        for player_index, player in enumerate(self.player_types.keys()):
+            player_interaction = self.player_types[player]
+            data['players'][player_index]['kind'] = self.player_types[player].__name__
+        return data
 
     @classmethod
     def new_game(cls):
@@ -32,7 +55,7 @@ class GameServer:
         player_types = {}
         for p in range(player_count):
             name, kind = cls.request_player()
-            player = Player(name = name, player_type = "DummyAI")
+            player = Player(name = name, player_type = all_player_types.DummyAI)
             player_types[player] = kind
         game_state = GameState(list(player_types.keys()))
         result = cls(player_types, game_state)
@@ -72,7 +95,13 @@ class GameServer:
                 break
             print("Имя игрока должно содержать только буквы")
 
-        kind = "DummyAI"
+        while True:
+            try:
+                kind = input("Какой это игрок?: ")
+                kind = getattr(all_player_types, kind)
+                break
+            except AttributeError:
+                print("Виды игроков: DummyAI, Human")
         return name, kind
 
     def make_new_dices(self) -> GamePhase:
@@ -149,7 +178,8 @@ def __main__():
     load_from_file = False
     if load_from_file:
         server = GameServer.load_game()
-    server = GameServer.new_game()
+    else:
+        server = GameServer.new_game()
     server.run()
 
 if __name__ == "__main__":
