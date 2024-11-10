@@ -8,7 +8,7 @@ class PlayerInteraction(ABC):
 
     @classmethod
     @abstractmethod
-    def draw_object(cls, valid_pairs):
+    def draw_object(cls, house, player_dice, centre_dice):
         pass
 
     @classmethod

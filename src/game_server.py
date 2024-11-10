@@ -96,7 +96,7 @@ class GameServer:
         print(f'Кубик: {current_player.dice}')
         print(f'Дом: {current_player.house.print()}')
         interaction = self.player_types[current_player]
-        tower, choice_pair = interaction.draw_object(current_player.house.valid_pairs())
+        tower, choice_pair = interaction.draw_object(current_player.house, current_player.dice, self.game_state.dices_normal)
         if choice_pair is not None:
             self.game_state.draw_object(tower, choice_pair)
         self.inform_all("inform_object_drawn", current_player)
