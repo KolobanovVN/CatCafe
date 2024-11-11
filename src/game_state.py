@@ -3,6 +3,7 @@ from src.player import Player
 
 
 class GameState:
+    """Состояние игры Котокафе"""
 
     # Стандартные __init__, __eq__:
     def __init__(self, players: list[Player], round_g: int = 1, phase: int = 0, turn: int = 0, dices: str = ''):

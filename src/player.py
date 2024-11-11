@@ -10,7 +10,7 @@ class Player:
 
     # Стандартные __init__, __str__ и __eq__:
     def __init__(self, name: str, dice: Dice = None, score: int = 0,
-                 house: House = None, player_type = None):
+                 house: House = House(None), player_type = None):
         self.name = name
         self.dice = dice
         self.score = score

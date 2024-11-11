@@ -1,5 +1,8 @@
 from abc import ABC, abstractmethod
 
+from src.dice import Dice
+from src.player import Player
+
 class PlayerInteraction(ABC):
     @classmethod
     @abstractmethod
@@ -12,9 +15,9 @@ class PlayerInteraction(ABC):
         pass
 
     @classmethod
-    def inform_dice_chosen(cls):
+    def inform_dice_chosen(cls, player: Player, dice: Dice):
         pass
 
     @classmethod
-    def inform_object_drawn(cls):
+    def inform_object_drawn(cls, player: Player, tower: int, choice_pair: list):
         pass
