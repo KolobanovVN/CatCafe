@@ -16,7 +16,7 @@ class DummyAI(PlayerInteraction):
         for tower in House.SAFE_TOWER:
             valid_pairs = house.valid_pairs(tower, player_dice, centre_dice)
             if len(valid_pairs) > 0: return tower, valid_pairs.index(choice(valid_pairs)) + 1
-        return None
+        return None, None
 
     @classmethod
     def inform_dice_chosen(cls, player: Player, dice: int):

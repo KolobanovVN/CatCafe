@@ -1,6 +1,6 @@
 import json
 
-from src.dice import Dice
+from src.dice import Dice, DiceValues
 from src.dice import DiceValues as DV
 from src.player import Player
 from src.game_state import GameState
@@ -133,6 +133,8 @@ class GameServer:
             pair_raw = current_player.house.valid_pairs(tower, current_player.dice, self.game_state.dices_normal[0])
             pair = pair_raw[choice_pair-1]
             self.game_state.draw_object(tower, choice_pair)
+        else:
+            current_player.dice = Dice(DiceValues.EMPTY)
         self.inform_all("inform_object_drawn", current_player, tower, pair)
         return GamePhase.NEXT_PLAYER
 
@@ -150,8 +152,9 @@ class GameServer:
             return GamePhase.NEW_DICES
 
     def count_score(self) -> list:
-        return [self.player_types[i].house.count_final_score() \
-                for i in range(len(self.player_types))]
+        y_players = [player.house.count_yarns() for player in self.player_types]
+        y_max = [] #Надо придумать, как из [[x, x, x, x, x], [y, y, y, y, y], ...] сделать [z, z, z, z, z], где z = max(x, y, ...)
+        return [player.house.count_final_score(y_max) for player in self.player_types]
 
     def next_player(self) -> GamePhase:
         self.game_state.next_player()
