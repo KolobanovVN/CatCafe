@@ -55,7 +55,7 @@ class GameServer:
         player_types = {}
         for p in range(player_count):
             name, kind = cls.request_player()
-            player = Player(name = name, player_type = all_player_types.DummyAI)
+            player = Player(name = name, player_type = all_player_types.Bot)
             player_types[player] = kind
         game_state = GameState(list(player_types.keys()))
         result = cls(player_types, game_state)
@@ -101,7 +101,7 @@ class GameServer:
                 kind = getattr(all_player_types, kind)
                 break
             except AttributeError:
-                print("Виды игроков: DummyAI, Human")
+                print("Виды игроков: Bot, Human")
         return name, kind
 
     def make_new_dices(self) -> GamePhase:
@@ -138,15 +138,14 @@ class GameServer:
 
     def check_towers_phase(self) -> GamePhase:
         print('Фаза подсчёта очков')
-        towers = [self.player_types[i].house.count_filled_columns() \
-                  for i in range(len(self.player_types))]
+        towers = [player.house.count_filled_columns() for player in self.player_types]
         if max(towers) >= 3:
             print('Обнаружен игрок с 3 и более заполненными башнями!')
-            null = input() # Трассировка игры!
+            #null = input() # Трассировка игры!
             return GamePhase.COUNT_SCORE
         else:
             print('Раунд закончен.')
-            null = input()  # Трассировка игры!
+            #null = input()  # Трассировка игры!
             self.game_state.round_g += 1; self.game_state.phase = 0
             return GamePhase.NEW_DICES
 

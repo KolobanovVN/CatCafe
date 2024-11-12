@@ -32,15 +32,15 @@ class Human(PlayerInteraction):
                     else:
                         return None
                 elif len(valid_pairs) == 1:
-                    print(f'Вы можете разместить {valid_pairs[0][0].word} на {valid_pairs[0][1].value} этаж')
+                    print(f'Вы можете разместить {Dice(valid_pairs[0][0]).word()} на {Dice(valid_pairs[0][1]).value} этаж')
                     answer = int(input('Нарисовать предмет (введите 1) или пропуск хода (введите 2)? '))
                     if answer == 1: return tower, answer
                     elif answer == 2: return None
                     else: raise ValueError
                 elif len(valid_pairs) == 2:
                     answer = int(input(
-                        f'Выберите действие: {valid_pairs[0][0].word} на {valid_pairs[0][1].value} этаж (введите 1)'
-                        f'Или {valid_pairs[1][0].word} на {valid_pairs[1][1].value} (введите 2): '))
+                        f'Выберите действие: {Dice(valid_pairs[0][0]).word()} на {Dice(valid_pairs[0][1]).value} этаж (введите 1)'
+                        f'Или {Dice(valid_pairs[1][0]).word()} на {Dice(valid_pairs[1][1]).value} (введите 2): '))
                     if 0 < answer <= len(valid_pairs):
                         answer = int(input('Нарисовать предмет (введите 1) или пропуск хода (введите 2)? '))
                         if answer == 1: return tower, answer
