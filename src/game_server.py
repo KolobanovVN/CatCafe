@@ -106,18 +106,17 @@ class GameServer:
 
     def make_new_dices(self) -> GamePhase:
         print(f'Раунд {self.game_state.round_g}')
-        self.game_state.dices_normal = [Dice() for _ in range(len(self.player_types)+1)]
-        for i in range(len(self.game_state.dices_normal)): self.game_state.dices_normal[i].roll()
+        self.game_state.dices = [Dice() for _ in range(len(self.player_types) + 1)]
+        for i in range(len(self.game_state.dices)): self.game_state.dices[i].roll()
         return GamePhase.CHOOSE_DICE
 
     def choose_dice_phase(self) -> GamePhase:
         print(f'Фаза выбора кубика, ход {self.game_state.current_player().name}')
         current_player = self.game_state.current_player()
-        print(f'Кубики: {self.game_state.dices_normal}')
+        print(f'Кубики: {self.game_state.dices}')
         interaction = self.player_types[current_player]
-        choice_dice = interaction.choose_dice(self.game_state.dices_normal)
+        choice_dice = interaction.choose_dice(self.game_state.dices)
         self.game_state.take_dice(choice_dice)
-        self.inform_all("inform_dice_chosen", current_player, choice_dice)
         return GamePhase.NEXT_PLAYER
 
     def draw_object_phase(self) -> GamePhase:
@@ -125,17 +124,16 @@ class GameServer:
         current_player = self.game_state.current_player()
         interaction = self.player_types[current_player]
         pair = None
-        print(f'Центральный кубик: {self.game_state.dices_normal}')
+        print(f'Центральный кубик: {self.game_state.dices}')
         print(f'Кубик: {current_player.dice}')
         print(f'Дом: {current_player.house.print()}')
-        tower, choice_pair = interaction.draw_object(current_player.house, current_player.dice, self.game_state.dices_normal[0])
+        tower, choice_pair = interaction.draw_object(current_player.house, current_player.dice, self.game_state.dices[0])
         if choice_pair is not None:
-            pair_raw = current_player.house.valid_pairs(tower, current_player.dice, self.game_state.dices_normal[0])
+            pair_raw = current_player.house.valid_pairs(tower, current_player.dice, self.game_state.dices[0])
             pair = pair_raw[choice_pair-1]
             self.game_state.draw_object(tower, choice_pair)
         else:
             current_player.dice = Dice(DiceValues.EMPTY)
-        self.inform_all("inform_object_drawn", current_player, tower, pair)
         return GamePhase.NEXT_PLAYER
 
     def check_towers_phase(self) -> GamePhase:
@@ -153,12 +151,12 @@ class GameServer:
 
     def count_score(self) -> list:
         y_players = [player.house.count_yarns() for player in self.player_types]
-        y_max = [] #Надо придумать, как из [[x, x, x, x, x], [y, y, y, y, y], ...] сделать [z, z, z, z, z], где z = max(x, y, ...)
+        y_max = GameState.get_y_max(y_players)
         return [player.house.count_final_score(y_max) for player in self.player_types]
 
     def next_player(self) -> GamePhase:
         self.game_state.next_player()
-        if len(self.game_state.dices_normal) > 1:
+        if len(self.game_state.dices) > 1:
             return GamePhase.CHOOSE_DICE
         elif self.game_state.current_player().dice != Dice(DV.EMPTY):
             return GamePhase.DRAW_OBJECT
@@ -176,10 +174,6 @@ class GameServer:
         for i in range(len(scores)):
             if scores[i] == max_score: print(f"{self.game_state.players[i]} победитель!")
         return GamePhase.GAME_END
-
-    def inform_all(self, method: str, *args, **kwargs):
-        for p in self.player_types.values():
-            getattr(p, method)(*args, **kwargs)
 
 def __main__():
     load_from_file = False

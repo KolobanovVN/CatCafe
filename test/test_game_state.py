@@ -24,7 +24,6 @@ data = {
         "I E I E E I I I",
         "I I I I I I I I"
       ],
-      "player_type": "human"
     },
     {
       "name": "Bob",
@@ -40,7 +39,6 @@ data = {
         "I E I E E I I I",
         "I I I I I I I I"
       ],
-      "player_type": "dummy_ai"
     }
   ]
 }
@@ -55,7 +53,7 @@ def test_init():
     assert game.round_g == 4
     assert game.phase == 3
     assert game.turn == 0
-    assert game.dices_normal == [Dice(4)]
+    assert game.dices == [Dice(4)]
 
 def test_eq():
     players = [alice, bob]
@@ -97,18 +95,23 @@ def test_take_dice():
     players = [alice, bob]
     game = GameState(players=players, round_g=5, phase=1, turn=0, dices="2 3 6")
     game.current_player().dice = 0
-    assert game.dices_normal == [Dice(2), Dice(3), Dice(6)]
+    assert game.dices == [Dice(2), Dice(3), Dice(6)]
 
     game.take_dice(3)
-    assert game.dices_normal == [Dice(2), Dice(6)]
+    assert game.dices == [Dice(2), Dice(6)]
     assert game.current_player().dice == Dice(3)
 
 def test_draw_object():
     players = [alice, bob]
     game = GameState(players=players, round_g=5, phase=2, turn=0, dices="2")
 
-    assert game.dices_normal == [Dice(2)]
+    assert game.dices == [Dice(2)]
     assert game.current_player().dice == Dice(3)
 
     game.draw_object(4, 1)
     assert game.current_player().house.field[4][3] == Dice(2)
+
+def test_get_y_max():
+    y_players = [[0, 0, 1, 2, 1], [3, 3, 1, 1, 0]]
+    y_max = GameState.get_y_max(y_players)
+    assert y_max == [3, 3, 1, 2, 1]

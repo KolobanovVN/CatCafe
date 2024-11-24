@@ -18,11 +18,11 @@ class DummyAI(PlayerInteraction):
             if len(valid_pairs) > 0: return tower, valid_pairs.index(choice(valid_pairs)) + 1
         return None, None
 
-    @classmethod
+    @classmethod # Куда это девать???
     def inform_dice_chosen(cls, player: Player, dice: int):
         print(f'{player.name} взял кубик {dice}')
 
-    @classmethod
+    @classmethod # Куда это девать???
     def inform_object_drawn(cls, player: Player, tower: int, pair: list):
         if pair is None:
             print(f'{player.name} ничего не нарисовал')

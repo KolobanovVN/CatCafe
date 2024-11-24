@@ -11,10 +11,10 @@ class GameState:
         self.round_g: int = round_g
         self.phase: int = phase
         self.turn: int = turn
-        self.dices_normal = []
+        self.dices = []
         raw_dices = dices.split()
         for i in raw_dices:
-            self.dices_normal.append(Dice(int(i)))
+            self.dices.append(Dice(int(i)))
 
     def __eq__(self, other):
         if self.players != other.players:
@@ -25,7 +25,7 @@ class GameState:
             return False
         if self.turn != other.turn:
             return False
-        if self.dices_normal != other.dices_normal:
+        if self.dices != other.dices:
             return False
         return True
 
@@ -35,7 +35,7 @@ class GameState:
             "round_g": self.round_g,
             "phase": self.phase,
             "turn": self.turn,
-            "dices": ' '.join(str(self.dices_normal[i].value) for i in range(len(self.dices_normal))),
+            "dices": ' '.join(str(self.dices[i].value) for i in range(len(self.dices))),
             "players": [p.save() for p in self.players],
         }
 
@@ -62,10 +62,14 @@ class GameState:
     def take_dice(self, choice_dice: int):
         """Текущий игрок берёт кубик."""
         self.current_player().dice = Dice(choice_dice)
-        self.dices_normal.remove(Dice(choice_dice))
+        self.dices.remove(Dice(choice_dice))
 
     def draw_object(self, tower: int, choice_pair: int):
         """Текущий игрок рисует у себя объект"""
-        pairs = self.current_player().house.valid_pairs(tower, self.current_player().dice, self.dices_normal[0])
+        pairs = self.current_player().house.valid_pairs(tower, self.current_player().dice, self.dices[0])
         self.current_player().house.field[tower][pairs[choice_pair - 1][0]] = Dice(pairs[choice_pair - 1][1])
         self.current_player().dice = Dice(DiceValues.EMPTY)
+
+    @staticmethod
+    def get_y_max(y_players: list):
+        return list(map(max, zip(*y_players)))

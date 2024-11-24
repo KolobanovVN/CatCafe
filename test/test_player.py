@@ -24,21 +24,19 @@ alice_data = {"name": "Alice",
         "I E E E M E E I",
         "I E I E E I I I",
         "I I I I I I I I"
-      ],
-      "player_type": "human"}
+      ],}
 
 def test_init():
     h = House.load(alice_house)
-    p = Player(name = "Alice", dice = Dice(6), score = 0, house = h, player_type = 'human')
+    p = Player(name = "Alice", dice = Dice(6), score = 0, house = h)
     assert p.name == "Alice"
     assert p.dice == Dice(6)
     assert p.score == 0
     assert p.house == h
-    assert p.player_type == "human"
 
 def test_str():
     h = House.load(alice_house)
-    p = Player(name = "Alice", dice = Dice(6), score = 0, house = h, player_type = "human")
+    p = Player(name = "Alice", dice = Dice(6), score = 0, house = h)
     assert str(p) == '''
 Игрок: Alice
 Кубик: 6
@@ -60,24 +58,23 @@ def test_str():
  |   1__   |   1__   |  
  |    |    |    |    |  
  =    =    =    =    =
-Тип игрока: human
 '''
 
 def test_eq():
     h1 = House.load(alice_house)
     h2 = House.load(alice_house)
-    p1 = Player(name = "Alice", dice = Dice(6), score = 0, house = h1, player_type = "human")
-    p2 = Player(name = "Alice", dice = Dice(6), score = 0, house = h2, player_type = "human")
+    p1 = Player(name = "Alice", dice = Dice(6), score = 0, house = h1)
+    p2 = Player(name = "Alice", dice = Dice(6), score = 0, house = h2)
     assert p1 == p2
 
 def test_save():
     h = House.load(alice_house)
-    p = Player(name = "Alice", dice = Dice(6), score = 0, house = h, player_type = "human")
+    p = Player(name = "Alice", dice = Dice(6), score = 0, house = h)
     assert p.save() == alice_data
 
 def test_load():
     data = alice_data
     h = House.load(alice_house)
-    p = Player(name = "Alice", dice = Dice(6), score = 0, house = h, player_type = "human")
+    p = Player(name = "Alice", dice = Dice(6), score = 0, house = h)
     p_from_data = Player.load(data)
     assert p == p_from_data
