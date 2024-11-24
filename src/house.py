@@ -2,6 +2,7 @@ from itertools import count
 
 from src.dice import Dice
 from src.dice import DiceValues as DV
+from src.action import Action
 import typing
 
 class House:
@@ -165,13 +166,15 @@ class House:
                 if self.field[i][j] == Dice(DV.YARN): num_of_yarns[i-1] += 1
         return num_of_yarns
 
-    def valid_pairs(self, tower: int, player_dice: Dice, centre_dice: Dice) -> list:
-        pairs = []
-        i = player_dice.value
-        j = centre_dice.value
-        if self.field[tower][j] == Dice(DV.EMPTY): pairs.append([i, j])
-        if self.field[tower][i] == Dice(DV.EMPTY): pairs.append([j, i])
-        return pairs
+    def valid_actions(self, player_dice: Dice, centre_dice: Dice) -> list:
+        actions = []
+        for tower in self.SAFE_TOWER:
+            if player_dice != centre_dice:
+                if self.field[tower][player_dice.value] == Dice(DV.EMPTY): actions.append(Action(centre_dice, player_dice.value, tower))
+                if self.field[tower][centre_dice.value] == Dice(DV.EMPTY): actions.append(Action(player_dice, centre_dice.value, tower))
+            if player_dice == centre_dice:
+                if self.field[tower][player_dice.value] == Dice(DV.EMPTY): actions.append(Action(player_dice, player_dice.value, tower))
+        return actions
 
     def neighbors(self, tower: int, floor: int)  -> list:
         neighbors_list = []

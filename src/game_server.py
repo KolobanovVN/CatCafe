@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 
 from src.dice import Dice, DiceValues
 from src.dice import DiceValues as DV
@@ -25,7 +26,7 @@ class GameServer:
         self.game_state = game_state
 
     @classmethod
-    def load_game(cls, filename):
+    def load_game(cls, filename: str | Path):
         with open(filename, 'r') as file_in:
             data = json.load(file_in)
             game_state = GameState.load(data)
@@ -36,16 +37,14 @@ class GameServer:
                 player_types[player] = kind
             return GameServer(player_types = player_types, game_state = game_state)
 
-
-    def save(self, filename):
+    def save(self, filename: str | Path):
         data = self.save_to_dict()
         with open(filename, 'w') as file_out:
-            json.dumps(data, file_out, indent = 4)
+            json.dump(data, file_out, indent=2)
 
     def save_to_dict(self):
         data = self.game_state.save()
         for player_index, player in enumerate(self.player_types.keys()):
-            player_interaction = self.player_types[player]
             data['players'][player_index]['kind'] = self.player_types[player].__name__
         return data
 
@@ -55,7 +54,7 @@ class GameServer:
         player_types = {}
         for p in range(player_count):
             name, kind = cls.request_player()
-            player = Player(name = name, player_type = all_player_types.Bot)
+            player = Player(name = name)
             player_types[player] = kind
         game_state = GameState(list(player_types.keys()))
         result = cls(player_types, game_state)
@@ -101,7 +100,7 @@ class GameServer:
                 kind = getattr(all_player_types, kind)
                 break
             except AttributeError:
-                print("Виды игроков: Bot, Human")
+                print("Виды игроков: DummyAI, Human")
         return name, kind
 
     def make_new_dices(self) -> GamePhase:
@@ -117,6 +116,7 @@ class GameServer:
         interaction = self.player_types[current_player]
         choice_dice = interaction.choose_dice(self.game_state.dices)
         self.game_state.take_dice(choice_dice)
+        print(f'{current_player.name} взял кубик {current_player.dice}')
         return GamePhase.NEXT_PLAYER
 
     def draw_object_phase(self) -> GamePhase:
@@ -127,13 +127,13 @@ class GameServer:
         print(f'Центральный кубик: {self.game_state.dices}')
         print(f'Кубик: {current_player.dice}')
         print(f'Дом: {current_player.house.print()}')
-        tower, choice_pair = interaction.draw_object(current_player.house, current_player.dice, self.game_state.dices[0])
-        if choice_pair is not None:
-            pair_raw = current_player.house.valid_pairs(tower, current_player.dice, self.game_state.dices[0])
-            pair = pair_raw[choice_pair-1]
-            self.game_state.draw_object(tower, choice_pair)
+        choice_action = interaction.draw_object(current_player.house, current_player.dice, self.game_state.dices[0])
+        if choice_action is not None:
+            self.game_state.draw_object(choice_action)
+            print(f'{current_player.name} нарисовал {choice_action.dice.word()} на {choice_action.floor} этаже {choice_action.tower} башни')
         else:
             current_player.dice = Dice(DiceValues.EMPTY)
+            print(f'{current_player.name} ничего не нарисовал')
         return GamePhase.NEXT_PLAYER
 
     def check_towers_phase(self) -> GamePhase:
@@ -141,12 +141,11 @@ class GameServer:
         towers = [player.house.count_filled_columns() for player in self.player_types]
         if max(towers) >= 3:
             print('Обнаружен игрок с 3 и более заполненными башнями!')
-            #null = input() # Трассировка игры!
-            return GamePhase.COUNT_SCORE
+            return GamePhase.DECLARE_WINNER
         else:
             print('Раунд закончен.')
-            #null = input()  # Трассировка игры!
             self.game_state.round_g += 1; self.game_state.phase = 0
+            self.save('catcafe_save.json')
             return GamePhase.NEW_DICES
 
     def count_score(self) -> list:
@@ -164,21 +163,21 @@ class GameServer:
             return GamePhase.CHECK_TOWERS
 
     def declare_winner(self) -> GamePhase:
-        scores = GameServer.count_score()
+        scores = self.count_score()
         max_score = max(scores)
         # Выводим очки
         print('Очки игроков:')
         for i in range(len(scores)):
-            print(f"{self.game_state.players[i]}: {scores[i]}")
+            print(f"{self.game_state.players[i].name}: {scores[i]}")
         # Выводим победителей
         for i in range(len(scores)):
-            if scores[i] == max_score: print(f"{self.game_state.players[i]} победитель!")
+            if scores[i] == max_score: print(f"{self.game_state.players[i].name} победитель!")
         return GamePhase.GAME_END
 
 def __main__():
     load_from_file = False
     if load_from_file:
-        server = GameServer.load_game()
+        server = GameServer.load_game('catcafe.json')
     else:
         server = GameServer.new_game()
     server.run()

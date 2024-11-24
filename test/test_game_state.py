@@ -1,5 +1,6 @@
 import pytest
 
+from src.action import Action
 from src.dice import Dice
 from src.player import Player
 from src.game_state import GameState
@@ -104,11 +105,8 @@ def test_take_dice():
 def test_draw_object():
     players = [alice, bob]
     game = GameState(players=players, round_g=5, phase=2, turn=0, dices="2")
-
-    assert game.dices == [Dice(2)]
-    assert game.current_player().dice == Dice(3)
-
-    game.draw_object(4, 1)
+    action = Action(Dice(2), 3, 4)
+    game.draw_object(action)
     assert game.current_player().house.field[4][3] == Dice(2)
 
 def test_get_y_max():

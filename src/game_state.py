@@ -1,3 +1,4 @@
+from src.action import Action
 from src.dice import Dice, DiceValues
 from src.player import Player
 
@@ -64,10 +65,9 @@ class GameState:
         self.current_player().dice = Dice(choice_dice)
         self.dices.remove(Dice(choice_dice))
 
-    def draw_object(self, tower: int, choice_pair: int):
+    def draw_object(self, choice_action: Action):
         """Текущий игрок рисует у себя объект"""
-        pairs = self.current_player().house.valid_pairs(tower, self.current_player().dice, self.dices[0])
-        self.current_player().house.field[tower][pairs[choice_pair - 1][0]] = Dice(pairs[choice_pair - 1][1])
+        self.current_player().house.field[choice_action.tower][choice_action.floor] = choice_action.dice
         self.current_player().dice = Dice(DiceValues.EMPTY)
 
     @staticmethod

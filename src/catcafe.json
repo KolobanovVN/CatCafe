@@ -1,0 +1,38 @@
+{
+  "round_g": 4,
+  "phase": 3,
+  "turn": 0,
+  "dices": "4",
+  "players": [
+    {
+      "name": "Alice",
+      "dice": 6,
+      "score": 0,
+      "house": [
+        "I I I I I I I I",
+        "I E E M I E I I",
+        "I E D E E E E I",
+        "I E B I E E E I",
+        "I E E E M E E I",
+        "I E I E E I I I",
+        "I I I I I I I I"
+      ],
+      "kind": "Human"
+    },
+    {
+      "name": "Bob",
+      "dice": 3,
+      "score": 0,
+      "house": [
+        "I I I I I I I I",
+        "I E E E I E I I",
+        "I E E D E E E I",
+        "I E M I Y E E I",
+        "I E E E H E E I",
+        "I E I E E I I I",
+        "I I I I I I I I"
+      ],
+      "kind": "DummyAI"
+    }
+  ]
+}

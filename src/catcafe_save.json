@@ -1,0 +1,68 @@
+{
+  "round_g": 21,
+  "phase": 0,
+  "turn": 0,
+  "dices": "4",
+  "players": [
+    {
+      "name": "A",
+      "dice": 0,
+      "score": 0,
+      "house": [
+        "I I I I I I I I",
+        "I Y P Y I B I I",
+        "I E D Y M Y D I",
+        "I M M I Y P P I",
+        "I H M H E P Y I",
+        "I B I E E I I I",
+        "I I I I I I I I"
+      ],
+      "kind": "DummyAI"
+    },
+    {
+      "name": "B",
+      "dice": 0,
+      "score": 0,
+      "house": [
+        "I I I I I I I I",
+        "I E B Y I Y I I",
+        "I M H E E P M I",
+        "I Y H I E Y Y I",
+        "I Y Y E Y D P I",
+        "I Y I H P I I I",
+        "I I I I I I I I"
+      ],
+      "kind": "DummyAI"
+    },
+    {
+      "name": "C",
+      "dice": 0,
+      "score": 0,
+      "house": [
+        "I I I I I I I I",
+        "I E B Y I P I I",
+        "I E D M Y Y M I",
+        "I B M I Y D D I",
+        "I D M Y P E Y I",
+        "I E I E H I I I",
+        "I I I I I I I I"
+      ],
+      "kind": "DummyAI"
+    },
+    {
+      "name": "D",
+      "dice": 0,
+      "score": 0,
+      "house": [
+        "I I I I I I I I",
+        "I D B P I E I I",
+        "I E Y Y Y H P I",
+        "I E P I H P M I",
+        "I M P Y M M M I",
+        "I E I H Y I I I",
+        "I I I I I I I I"
+      ],
+      "kind": "DummyAI"
+    }
+  ]
+}

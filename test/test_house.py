@@ -1,5 +1,6 @@
 import pytest
 
+from src.action import Action
 from src.dice import Dice
 from src.dice import DiceValues as DV
 from src.house import House
@@ -188,12 +189,17 @@ def test_count_final_score():
     assert house3.score_house() == -10
     assert house3.count_final_score([0, 0, 0, 0, 0]) == 18
 
-def test_valid_pairs():
+def test_valid_actions():
     dice1 = Dice(DV.YARN)
     dice2 = Dice(DV.PILLOW)
     house = House(house_list1)
-    assert house.valid_pairs(4, dice1, dice2) == [[2, 5], [5, 2]]
-    assert house.valid_pairs(2, dice1, dice2) == [[2, 5]]
+    assert house.valid_actions(dice1, dice2) == \
+           [Action(Dice(5),2,1),
+            Action(Dice(2),5,1),
+            Action(Dice(2),5,2),
+            Action(Dice(2),5,3),
+            Action(Dice(5),2,4),
+            Action(Dice(2),5,4)]
 
 def test_neighbors():
     house = House(None)

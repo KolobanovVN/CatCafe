@@ -128,8 +128,7 @@ Server: Раунд закончен.
       "name": "Alice",
       "dice": 6,
       "score": 0,
-      "house":
-      [
+      "house": [
         "I I I I I I I I",
         "I E E M I E I I",
         "I E D E E E E I",
@@ -138,14 +137,13 @@ Server: Раунд закончен.
         "I E I E E I I I",
         "I I I I I I I I"
       ],
-      "player_type": "Human"
+      "kind": "Human"
     },
     {
       "name": "Bob",
       "dice": 3,
       "score": 0,
-      "house":
-      [
+      "house": [
         "I I I I I I I I",
         "I E E E I E I I", 
         "I E E D E E E I", 
@@ -154,7 +152,7 @@ Server: Раунд закончен.
         "I E I E E I I I",
         "I I I I I I I I"
       ],
-      "player_type": "DummyAI"
+      "kind": "DummyAI"
     }
   ]
 }
