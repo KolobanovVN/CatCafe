@@ -16,9 +16,7 @@ class Application:
             pygame.display.set_icon(icon_img)
         except FileNotFoundError:
             pass
-
-        self.vgame = None
-
+        self.vgame = ViewGame()
 
     def run(self):
         clock = pygame.time.Clock()
@@ -26,13 +24,13 @@ class Application:
         self.display.fill((255, 255, 170), (0, 0, self.width, self.height))
         pygame.display.update()
         while running:
-            #self.vgame.model_update()
-            #self.vgame.redraw(self.display)
+            self.vgame.model_update()
+            self.vgame.redraw(self.display)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or \
                         event.type == pygame.KEYDOWN and event.key == pygame.K_q:
                     running = False
-                #self.vgame.event_processing(event)
+                self.vgame.event_processing(event)
             clock.tick(RSC["FPS"])
 
     def connect_with_game(self):
