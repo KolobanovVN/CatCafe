@@ -10,4 +10,6 @@ class Action:
         return f'{self.dice.word()} на {self.floor} этаж {self.tower} башни'
 
     def __eq__(self, other):
-        return self.dice == other.dice and self.floor == other.floor and self.tower == other.tower
+        return self.dice == other.dice \
+            and self.floor == other.floor \
+            and self.tower == other.tower

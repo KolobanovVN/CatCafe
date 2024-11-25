@@ -167,11 +167,11 @@ class GameServer:
         max_score = max(scores)
         # Выводим очки
         print('Очки игроков:')
-        for i in range(len(scores)):
-            print(f"{self.game_state.players[i].name}: {scores[i]}")
+        for player, score in zip(self.game_state.players, scores):
+            print(f"{player.name}: {score}")
         # Выводим победителей
-        for i in range(len(scores)):
-            if scores[i] == max_score: print(f"{self.game_state.players[i].name} победитель!")
+        for player, score in zip(self.game_state.players, scores):
+            if score == max_score: print(f"{player.name} победитель!")
         return GamePhase.GAME_END
 
 def __main__():

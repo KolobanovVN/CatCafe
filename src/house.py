@@ -169,11 +169,11 @@ class House:
     def valid_actions(self, player_dice: Dice, centre_dice: Dice) -> list:
         actions = []
         for tower in self.SAFE_TOWER:
+            if self.field[tower][player_dice.value] == Dice(DV.EMPTY):
+                actions.append(Action(centre_dice, player_dice.value, tower))
             if player_dice != centre_dice:
-                if self.field[tower][player_dice.value] == Dice(DV.EMPTY): actions.append(Action(centre_dice, player_dice.value, tower))
-                if self.field[tower][centre_dice.value] == Dice(DV.EMPTY): actions.append(Action(player_dice, centre_dice.value, tower))
-            if player_dice == centre_dice:
-                if self.field[tower][player_dice.value] == Dice(DV.EMPTY): actions.append(Action(player_dice, player_dice.value, tower))
+                if self.field[tower][centre_dice.value] == Dice(DV.EMPTY):
+                    actions.append(Action(player_dice, centre_dice.value, tower))
         return actions
 
     def neighbors(self, tower: int, floor: int)  -> list:

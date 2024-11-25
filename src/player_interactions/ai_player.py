@@ -13,5 +13,5 @@ class DummyAI(PlayerInteraction):
     @classmethod
     def draw_object(cls, house: House, player_dice: Dice, centre_dice: Dice):
         actions = house.valid_actions(player_dice, centre_dice)
-        if len(actions) > 0: return choice(actions)
-        return None
+        if len(actions) == 0: return None
+        return choice(actions)

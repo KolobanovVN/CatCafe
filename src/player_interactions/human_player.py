@@ -31,16 +31,12 @@ class Human(PlayerInteraction):
                 else:
                     print(f'Вы можете сходить следующим образом:')
                     print(f'0. Пропуск хода')
-                    number = 1
-                    for action in valid_actions:
+                    for number, action in enumerate(valid_actions, start=1):
                         print(f'{number}. Разместить {action}')
-                        number += 1
                     choice_action = int(input('Введите номер варианта хода: '))
                     if choice == 0:
                         return None
                     else:
                         return valid_actions[choice_action-1]
-            except ValueError:
-                print("Ошибка ввода, повторите ещё раз")
-            except IndexError:
+            except (ValueError, IndexError):
                 print("Ошибка ввода, повторите ещё раз")
